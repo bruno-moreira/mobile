@@ -13,7 +13,7 @@ export const s = StyleSheet.create({
         width: "100%",
     },
     button: {
-        backgroundColor: "#000",
+        backgroundColor: colors.gray[400],
         height: 80,
         width: 80,
         borderRadius: 50,
@@ -21,6 +21,8 @@ export const s = StyleSheet.create({
         justifyContent: "center",
     },
     title: {
-        color: "#FFF"
-    }
+        color: colors.gray[100],
+        fontFamily: fontFamily.semiBold,
+        fontSize: 16,
+    },
 })

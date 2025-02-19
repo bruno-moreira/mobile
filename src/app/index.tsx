@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { Button } from "@/components/button"
-import { router } from "expo-router"
+import { Link, router } from "expo-router"
 
 import {
     requestForegroundPermissionsAsync,
@@ -13,6 +12,7 @@ import {
 import MapView, { Marker } from "react-native-maps";
 
 import { s } from "./styles";
+import { colors, fontFamily } from "@/styles/theme";
 
 export default function App() {
     const [location, setLocation] = useState<LocationObject | null>(null);
@@ -70,10 +70,29 @@ export default function App() {
                 </MapView>
             }
 
-            <View style={{ position: "absolute", bottom: 32, left: 32, right: 32 }}>
-                <Button onPress={() => router.navigate("/home")}>
-                    <Button.Title>GO</Button.Title>
-                </Button>
+            <View style={{ position: "absolute", bottom: 32, left: 150, right: 150, marginBottom: 32 }}>
+                <TouchableOpacity style={s.button} onPress={() => router.navigate("/About")}>
+                    <Text style={s.title}>GO</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={{
+                width: "95%",
+                height: 50,
+                borderRadius: 15,
+                backgroundColor: colors.green.base,
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+                gap: 30,
+                marginBottom: 5,
+            }}>
+                <TouchableOpacity onPress={() => router.navigate("/home")}>
+                     <Text style={s.title}>Home</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => router.navigate("/About")}>
+                     <Text style={s.title}>Motorista</Text>
+                </TouchableOpacity>
             </View>
 
         </View>

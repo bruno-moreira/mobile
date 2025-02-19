@@ -66,7 +66,7 @@ export default function Home() {
     }
 
     useEffect(() => {
-        // puxa a localização atual getCurrentLocation()
+        getCurrentLocation()
         fetchCategories()
     }, [])
 
