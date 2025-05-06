@@ -10,7 +10,7 @@ type Props = PressableProps & {
     isSelected?: boolean
 }
 
-export function Category({ name, iconId, isSelected = false, ...rest }: Props){
+export function Category({ name, iconId, isSelected = false, ...rest }: Props) {
     const Icon = categoriesIcons[iconId]
     return (
         <Pressable style={[s.container, isSelected && s.containerSelected]}

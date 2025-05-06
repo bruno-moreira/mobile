@@ -19,8 +19,9 @@ type marketsProps = PlaceProps & {
 
 const currentLocation = {
     latitude: -14.8967367,
-    longitudde: -40.8499869,
+    longitude: -40.8499869
 }
+
 
 export default function Home() {
     const [categories, setCategories] = useState<CategoriesProps>([])
@@ -32,7 +33,10 @@ export default function Home() {
         try {
             const { data } = await api.get("/categories")
             setCategories(data)
-            setCategory(data[0].id)
+            if (data.length > 0) {
+                setCategory(data[0].id)
+            }
+
         } catch (error) {
             console.log(error)
             Alert.alert("Categorias", "Não foi possivél carregar as categorias.")
@@ -68,8 +72,8 @@ export default function Home() {
     }
 
     useEffect(() => {
-        getCurrentLocation()
         fetchCategories()
+        getCurrentLocation()
     }, [])
 
     useEffect(() => {
@@ -78,77 +82,71 @@ export default function Home() {
 
     return (
         <View style={{ flex: 1 }}>
-            <Categories
-                data={categories}
-                onSelect={setCategory}
-                selected={category}
-            />
-
-            <MapView style={{ flex: 1 }}
-                /*
-                initialRegion={{
-                    latitude: currentLocation.latitude,
-                    longitude: currentLocation.longitudde,
-                    latitudeDelta: 0.01,
-                    longitudeDelta: 0.01
-                }}
-                */
-                initialRegion={{
-                    latitude: location?.coords.latitude ?? currentLocation.latitude,
-                    longitude: location?.coords.longitude ?? currentLocation.longitudde,
-                    latitudeDelta: 0.005,
-                    longitudeDelta: 0.005
-                }}
-            >
-                <Marker
-                    identifier="current"
-                    coordinate={{
-                        /*
-                        latitude: currentLocation.latitude,
-                        longitude: currentLocation.longitudde,
-                        */
-
-                        latitude: location?.coords.latitude ?? currentLocation.latitude,
-                        longitude: location?.coords.longitude ?? currentLocation.longitudde,
-                    }}
-                    image={require("@/assets/location.png")}
+            <View style={{ flex: 1 }}>
+                <Categories
+                    data={categories}
+                    onSelect={setCategory}
+                    selected={category}
                 />
-                {
-                    markets.map((item) => (
-                        item.latitude !== undefined && item.longitude !== undefined && (
-                            <Marker
-                                key={item.id}
-                                identifier={item.id}
-                                coordinate={{
-                                    latitude: item.latitude,
-                                    longitude: item.longitude,
-                                }}
-                                image={require("@/assets/pin.png")}
-                            >
-                                <Callout onPress={() => router.navigate(`/market/${item.id}`)}>
-                                    <View>
-                                        <Text
-                                            style={{
-                                                fontSize: 14,
-                                                color: colors.gray[600],
-                                                fontFamily: fontFamily.medium,
-                                            }}
-                                        >{item.name}</Text>
-                                        <Text
-                                            style={{
-                                                fontSize: 12,
-                                                color: colors.gray[600],
-                                                fontFamily: fontFamily.medium,
-                                            }}
-                                        >{item.description}</Text>
-                                    </View>
-                                </Callout>
-                            </Marker>
-                        )
-                    ))
-                }
-            </MapView>
 
+                <MapView style={{ flex: 1 }}
+                    pointerEvents="box-none"
+                    initialRegion={{
+                        latitude: location?.coords.latitude ?? currentLocation.latitude,
+                        longitude: location?.coords.longitude ?? currentLocation.longitude,
+                        latitudeDelta: 0.005,
+                        longitudeDelta: 0.005
+                    }}
+                >
+                    <Marker
+                        identifier="current"
+                        coordinate={{
+                            /*
+                            latitude: currentLocation.latitude,
+                            longitude: currentLocation.longitudde,
+                            */
+
+                            latitude: location?.coords.latitude ?? currentLocation.latitude,
+                            longitude: location?.coords.longitude ?? currentLocation.longitude,
+                        }}
+                        image={require("@/assets/location.png")}
+                    />
+                    {
+                        markets.map((item) => (
+                            item.latitude !== undefined && item.longitude !== undefined && (
+                                <Marker
+                                    key={item.id}
+                                    identifier={item.id}
+                                    coordinate={{
+                                        latitude: item.latitude,
+                                        longitude: item.longitude,
+                                    }}
+                                    image={require("@/assets/pin.png")}
+                                >
+                                    <Callout onPress={() => router.navigate(`/market/${item.id}`)}>
+                                        <View>
+                                            <Text
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: colors.gray[600],
+                                                    fontFamily: fontFamily.medium,
+                                                }}
+                                            >{item.name}</Text>
+                                            <Text
+                                                style={{
+                                                    fontSize: 12,
+                                                    color: colors.gray[600],
+                                                    fontFamily: fontFamily.medium,
+                                                }}
+                                            >{item.description}</Text>
+                                        </View>
+                                    </Callout>
+                                </Marker>
+                            )
+                        ))
+                    }
+                </MapView>
+            </View>
             <Places data={markets} />
         </View>
     )
