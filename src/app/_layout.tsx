@@ -1,36 +1,40 @@
-import { Stack } from "expo-router";
-import { colors } from "@/styles/theme"
+import { useEffect, useState } from "react";
+import { Slot, router, usePathname } from "expo-router";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/firebaseConfig.js";
+import { View, ActivityIndicator } from "react-native";
 
-import { 
-    useFonts,
-    Rubik_600SemiBold,
-    Rubik_400Regular,
-    Rubik_500Medium,
-    Rubik_700Bold
-} from "@expo-google-fonts/rubik"
-import { Loading } from "@/components/loading";
-import { GestureHandlerRootView} from "react-native-gesture-handler";
+export default function Layout() {
+  const [carregando, setCarregando] = useState(true);
+  const [usuario, setUsuario] = useState<User | null>(null);
+  const pathname = usePathname();
 
-export default function Layout(){
-    const [fontsLoaded] = useFonts({
-        Rubik_600SemiBold,
-        Rubik_400Regular,
-        Rubik_500Medium,
-        Rubik_700Bold
-    })
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUsuario(user);
+      setCarregando(false);
 
-    if(!fontsLoaded){
-        return <Loading />
-    }
+      const estaNoLogin = pathname === "/login";
 
-    return ( 
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack 
-                screenOptions={{
-                    headerShown: false, 
-                    contentStyle: { backgroundColor: colors.gray[100]},
-                }}
-            />
-        </GestureHandlerRootView>
-    )
+      if (!user && !estaNoLogin) {
+        router.replace("/login");
+      }
+
+      if (user && estaNoLogin) {
+        router.replace("/");
+      }
+    });
+
+    return unsubscribe;
+  }, []); // Sem pathname aqui
+
+  if (carregando) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  return <Slot />;
 }
