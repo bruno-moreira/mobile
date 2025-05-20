@@ -1,4 +1,5 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, AuthError } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { Alert } from "react-native";
 import { auth } from "@/firebaseConfig";
 import { useEffect, useState, useRef } from "react";
@@ -96,6 +97,17 @@ export default function App() {
         }
       };
 
+      const handleLogout = async () => {
+  try {
+    await signOut(auth); // Faz o logout do usuário
+    Alert.alert("Logout realizado", "Você foi desconectado.");
+    router.replace("/login"); // Redireciona para a tela de login
+  } catch (error) {
+    console.error("Erro ao fazer logout:", error);
+    Alert.alert("Erro", "Não foi possível sair da conta.");
+  }
+};
+
 
     return (
         <View style={s.container}>
@@ -156,6 +168,9 @@ export default function App() {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={testarLoginFirebase}>
                         <Text style={{ padding: 10 }}>Testar Login Firebase</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleLogout}>
+                        <Text style={{ padding: 10 }}>Sair</Text>
                     </TouchableOpacity>
 
                 </Animated.View>

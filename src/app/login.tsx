@@ -4,6 +4,7 @@ import { View, TextInput, Button, Alert } from "react-native";
 import { auth } from "@/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { router } from "expo-router";
+import { s } from "./styles";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
