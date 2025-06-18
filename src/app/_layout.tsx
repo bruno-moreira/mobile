@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import { colors } from "@/styles/theme"
+import { CartProvider } from "@/contexts/cart"
 
 import { 
     useFonts,
@@ -24,13 +25,15 @@ export default function Layout(){
     }
 
     return ( 
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack 
-                screenOptions={{
-                    headerShown: false, 
-                    contentStyle: { backgroundColor: colors.gray[100]},
-                }}
-            />
-        </GestureHandlerRootView>
+        <CartProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+                <Stack 
+                    screenOptions={{
+                        headerShown: false, 
+                        contentStyle: { backgroundColor: colors.gray[100]},
+                    }}
+                />
+            </GestureHandlerRootView>
+        </CartProvider>
     )
 }

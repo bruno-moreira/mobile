@@ -71,7 +71,7 @@ export default function App() {
             }
 
             <View style={{ position: "absolute", bottom: 32, left: 150, right: 150, marginBottom: 32 }}>
-                <TouchableOpacity style={s.button} onPress={() => router.navigate("/About")}>
+                <TouchableOpacity style={s.button} onPress={() => router.navigate("/race")}>
                     <Text style={s.title}>GO</Text>
                 </TouchableOpacity>
             </View>
@@ -87,11 +87,11 @@ export default function App() {
                 gap: 30,
                 marginBottom: 5,
             }}>
-                <TouchableOpacity onPress={() => router.navigate("/home")}>
-                     <Text style={s.title}>Home</Text>
+                <TouchableOpacity onPress={() => router.navigate("/marketplace/marketplace")}>
+                     <Text style={s.title}>Marketplace</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.navigate("/About")}>
-                     <Text style={s.title}>Motorista</Text>
+                <TouchableOpacity onPress={() => router.navigate("/home")}>
+                     <Text style={s.title}>Parcerias</Text>
                 </TouchableOpacity>
             </View>
 
